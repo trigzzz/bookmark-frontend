@@ -8,11 +8,13 @@ function App() {
   const desRef = useRef(null)
   const linkRef = useRef(null)
 
+  const BASE_URL = "https://bookmark-backend-uthy.onrender.com"
+
   useEffect(() => {
 
     const getBookmarks = async () => {
       try {
-        const response = await fetch("http://localhost:8000/bookmarks")
+        const response = await fetch(`${BASE_URL}/bookmarks`)
         const data = await response.json()
         setBookmarks(data)
       } catch (err) {
@@ -33,7 +35,7 @@ function App() {
         link: linkRef.current.value
       }
 
-      const response = await fetch("http://localhost:8000/bookmarks", {
+      const response = await fetch(`${BASE_URL}/bookmarks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -67,12 +69,12 @@ function App() {
         {
           bookmarks.length ?
             bookmarks.map((b) => {
-              return <div style={{border: "2px solid white", margin: "5px", padding: "10px"}}>
+              return <div key={b._id}  style={{border: "2px solid white", margin: "5px", padding: "10px"}}>
                 <a href={b.link}>{b.name} Link</a>
                 <p>{b.description}</p>
                 <button onClick={async () => {
                   try {
-                    await fetch("http://localhost:8000/bookmarks/" + b._id, {
+                    await fetch(`${BASE_URL}/bookmarks/` + b._id, {
                       method: "DELETE",
                     })
                     setDeleteToggle(!deleteToggle)
